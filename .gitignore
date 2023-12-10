@@ -1,0 +1,8 @@
+# Ignoriere alle Dateien im Verzeichnis "example"
+certs/*
+
+# Ignoriere alle Dateien mit der Endung ".log"
+*.log
+
+# Ignoriere alle Dateien im Verzeichnis "temp" und seinen Unterverzeichnissen
+temp/**

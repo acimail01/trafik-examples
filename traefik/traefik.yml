@@ -1,0 +1,56 @@
+
+# shows you a log msg if a newer image tag can be used
+global:
+  checkNewVersion: true
+
+# log default is ERROR, but WARN is more helpful
+log:
+  level: WARN
+  # level: INFO
+
+# enable dashboard on 8080 with auth
+api:
+  insecure: true
+  dashboard: true
+
+# enable ping so the `traefik healthcheck` works
+ping: {}
+
+# auto-proxy containers if they have proper labels
+# and also use this file for dynamic config (tls)
+providers:
+  docker:
+    exposedByDefault: false
+    watch: true
+  file:
+    fileName: /etc/traefik/traefik.yml
+    watch: true
+
+# listen on 80/443, and redirect all 80 to 443 via 301
+entryPoints:
+  web:
+    address: :80
+#    http:
+#      redirections:
+#        entryPoint:
+#          to: websecure
+#          scheme: https
+#          permanent: true
+  websecure:
+    address: :443
+
+
+## DYNAMIC CONFIG
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/whoami4.crt
+        keyFile: /certs/whoami4.key
+  certificates:
+    - certFile: /certs/whoami6.crt
+      keyFile: /certs/whoami6.key
+    - certFile: /certs/whoami4.crt
+      keyFile: /certs/whoami4.key
+      stores:
+        - default
